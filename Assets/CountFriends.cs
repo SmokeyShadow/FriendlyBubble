@@ -39,5 +39,9 @@ public class CountFriends : MonoBehaviour
             yield return new WaitForSeconds(1f);
             numberCounter.text = numbersStrList[i];
         }
+        if(count != 5)
+        {
+            UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Room4, SoundPlayer.SoundClip.Nothing, 0);
+        }
     }
 }

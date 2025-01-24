@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Interactible
   - ground
+  - player
+  - room2
+  - room3
+  - room4
+  - room5
   layers:
   - Default
   - TransparentFX
@@ -22,7 +27,7 @@ TagManager:
   - PostProcessing
   - Wall
   - Bubble
-  - 
+  - Dialogue
   - 
   - 
   - 
@@ -43,6 +48,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: New Layer
+  - name: Dialogue
     uniqueID: 1802038029
     locked: 0

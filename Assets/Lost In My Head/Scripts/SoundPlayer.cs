@@ -38,7 +38,7 @@ public class SoundPlayer : MonoBehaviour
     #endregion
 
     #region ENUMS
-    public enum SoundClip { Jump1 = 0, Jump2, Jump3, Jump4, Jump5, win };
+    public enum SoundClip { Room1 = 0, Room2, Room3, Room5, Greeting, GlassLine, Heaven, Nothing };
     #endregion
 
     #region MONO BEHAVIOURS
@@ -50,12 +50,16 @@ public class SoundPlayer : MonoBehaviour
 
     private void Update()
     {
+        
         if (!loopaudioSource.isPlaying)
         {
             if (audioIndex == backAudioClips.Length)
                 audioIndex = 0;
-            loopaudioSource.clip = backAudioClips[audioIndex++];
-            loopaudioSource.Play();
+            if (loopaudioSource.clip)
+            {
+                loopaudioSource.clip = backAudioClips[audioIndex++];
+                loopaudioSource.Play();
+            }
         }
 
     }
@@ -64,6 +68,8 @@ public class SoundPlayer : MonoBehaviour
     #region PUBLIC METHODS
     public void PlaySound(SoundClip audio)
     {
+        if (audio == SoundClip.Nothing)
+            return;
         audioSource.PlayOneShot(clips[audio]);
     }
 

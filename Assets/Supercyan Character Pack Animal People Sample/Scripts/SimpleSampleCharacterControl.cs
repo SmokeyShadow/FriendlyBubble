@@ -62,6 +62,11 @@ namespace Supercyan.AnimalPeopleSample
             if (!m_rigidBody) { gameObject.GetComponent<Animator>(); }
         }
 
+        private void Start()
+        {
+            UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Room1, SoundPlayer.SoundClip.Room1, 4);
+        }
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
             ContactPoint2D[] contactPoints = collision.contacts;
@@ -117,12 +122,28 @@ namespace Supercyan.AnimalPeopleSample
             if (m_collisions.Count == 0) { m_isGrounded = false; }
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            switch(collision.gameObject.tag)
+            {
+                case "room2":
+                    UIController.Instance.ShowDialouge(UIController.DialogueType.Room2, SoundPlayer.SoundClip.Room2, 2.5f);
+                    break;
+                case "room3":
+                    UIController.Instance.ShowDialouge(UIController.DialogueType.Room3, SoundPlayer.SoundClip.Room3, 2.5f);
+                    break;
+                case "room5":
+                    UIController.Instance.ShowDialouge(UIController.DialogueType.Room5, SoundPlayer.SoundClip.Room5, 2.5f);
+                    break;
+            }
+        }
+
         private void Update()
         {
-           // Debug.Log("distance" + Vector3.Distance(friend.position, transform.position));
             if (Input.GetKeyDown(KeyCode.F))
             {
                 m_animator.SetTrigger("Wave");
+                UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Greeting, SoundPlayer.SoundClip.Greeting, 2);
                 OnWavePressed?.Invoke(bubblePlaces[bubblePlaceIndex++].transform);
                 friendsCount = bubblePlaceIndex;
             }
