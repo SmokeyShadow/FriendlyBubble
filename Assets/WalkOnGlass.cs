@@ -8,6 +8,8 @@ public class WalkOnGlass : MonoBehaviour
     private static WalkOnGlass _instance;
 
     [SerializeField]
+    private HeavenPlayer player;
+    [SerializeField]
     private List<GameObject> friends;
     [SerializeField]
     private Transform rightTransform;
@@ -36,6 +38,7 @@ public class WalkOnGlass : MonoBehaviour
 
     void Start()
     {
+        player.enabled = false;
         //assign breakble glasses (count = 5) between 8 rows
         GenerateGlassWay();
         UIController.Instance.ShowDialouge(UIController.DialogueType.GlassLine, SoundPlayer.SoundClip.GlassLine, 3);
@@ -118,6 +121,11 @@ public class WalkOnGlass : MonoBehaviour
         {
             currentRow = 0;
             friendIndex++;
+            if(friendIndex == friends.Count)
+            {
+                player.enabled = true;
+                yield break;
+            }
             GenerateFriend();
         }
         else

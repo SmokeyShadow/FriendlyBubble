@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 /*
  * Written by : Smoky Shadow
  * This script is a Manager for sounds
@@ -21,8 +23,9 @@ public class SoundPlayer : MonoBehaviour
     Dictionary<SoundClip, AudioClip> clips = new Dictionary<SoundClip, AudioClip>();
 
     [SerializeField]
-    private AudioClip[] backAudioClips;
+    private List<AudioClip> backAudioClips;
     int audioIndex = 0;
+    static bool onDontDestroyed;
     #endregion
 
     #region PROPERTIES
@@ -44,18 +47,26 @@ public class SoundPlayer : MonoBehaviour
     #region MONO BEHAVIOURS
     private void Start()
     {
-        instance = this;
         SetAudioDictionary();
-    }
 
+        if (SceneManager.GetActiveScene().name == "DemoDay")
+        {
+            if (!onDontDestroyed)
+            {
+                DontDestroyOnLoad(this.gameObject);
+                onDontDestroyed = true;
+            }
+        }
+
+    }
     private void Update()
     {
-        
         if (!loopaudioSource.isPlaying)
         {
-            if (audioIndex == backAudioClips.Length)
+            if (audioIndex == backAudioClips.Count)
                 audioIndex = 0;
-            if (loopaudioSource.clip)
+
+            if (backAudioClips.Count != 0)
             {
                 loopaudioSource.clip = backAudioClips[audioIndex++];
                 loopaudioSource.Play();
@@ -68,6 +79,8 @@ public class SoundPlayer : MonoBehaviour
     #region PUBLIC METHODS
     public void PlaySound(SoundClip audio)
     {
+        if (!audioSource)
+            audioSource = GameObject.FindGameObjectWithTag("soundEffect").GetComponent<AudioSource>();
         if (audio == SoundClip.Nothing)
             return;
         audioSource.PlayOneShot(clips[audio]);
@@ -76,6 +89,16 @@ public class SoundPlayer : MonoBehaviour
     public void MuteSound(bool enable)
     {
         audioSource.enabled = !enable;
+    }
+
+    public void VolumeDown()
+    {
+        loopaudioSource.volume = 0.2f;
+    }
+
+    public void VolumeUp()
+    {
+        loopaudioSource.volume = 1f;
     }
     #endregion
 

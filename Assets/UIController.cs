@@ -35,11 +35,13 @@ public class UIController : MonoBehaviour
     IEnumerator ShowDialougeRoutine(DialogueType type, SoundPlayer.SoundClip dialogueAudio, float afterTime)
     {
         yield return new WaitForSecondsRealtime(afterTime);
+        SoundPlayer.Instance.VolumeDown();
         SoundPlayer.Instance.PlaySound(dialogueAudio);
         Time.timeScale = 0;
         dialougeText.text = Dialouges[(int)type];
         dialougeText.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(6);
+        SoundPlayer.Instance.VolumeUp();
         dialougeText.gameObject.SetActive(false);
         Time.timeScale = 1;
     }
@@ -47,10 +49,12 @@ public class UIController : MonoBehaviour
     IEnumerator ShowDialougeWithOutFreezeRoutine(DialogueType type, SoundPlayer.SoundClip dialogueAudio, float afterTime)
     {
         yield return new WaitForSecondsRealtime(afterTime);
+        SoundPlayer.Instance.VolumeDown();
         SoundPlayer.Instance.PlaySound(dialogueAudio);
         dialougeText.text = Dialouges[(int)type];
         dialougeText.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(6);
+        SoundPlayer.Instance.VolumeUp();
         dialougeText.gameObject.SetActive(false);
     }
 

@@ -12,6 +12,11 @@ public class DayNightChange : MonoBehaviour
     {
         scene = SceneManager.GetActiveScene();
         sceneName = scene.name;
+        if(sceneName == "DemoDay")
+        {
+            UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Heaven, SoundPlayer.SoundClip.Heaven, 3.5f);
+        }
+        StartCoroutine(ChangeDayRoutine());
     }
 
    IEnumerator ChangeDayRoutine()

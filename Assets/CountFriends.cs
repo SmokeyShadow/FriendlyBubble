@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CountFriends : MonoBehaviour
 {
@@ -42,6 +43,10 @@ public class CountFriends : MonoBehaviour
         if(count != 5)
         {
             UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Room4, SoundPlayer.SoundClip.Nothing, 0);
+        }
+        else
+        {
+            SceneManager.LoadScene("GlassLine");
         }
     }
 }
