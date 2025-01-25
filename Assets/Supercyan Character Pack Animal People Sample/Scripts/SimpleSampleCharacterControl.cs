@@ -50,7 +50,7 @@ namespace Supercyan.AnimalPeopleSample
         private List<Collider2D> m_collisions = new List<Collider2D>();
 
         private int friendsCount;
-
+        private List<bool> showedDialogue = new List<bool>();
         public int FriendsCount { get => friendsCount; set => friendsCount = value; }
 
         public delegate void WavePressed(Transform parent);
@@ -127,13 +127,25 @@ namespace Supercyan.AnimalPeopleSample
             switch(collision.gameObject.tag)
             {
                 case "room2":
-                    UIController.Instance.ShowDialouge(UIController.DialogueType.Room2, SoundPlayer.SoundClip.Room2, 2.5f);
+                    if (!showedDialogue[0])
+                    {
+                        UIController.Instance.ShowDialouge(UIController.DialogueType.Room2, SoundPlayer.SoundClip.Room2, 2.5f);
+                        showedDialogue[0] = true;
+                    }
                     break;
                 case "room3":
-                    UIController.Instance.ShowDialouge(UIController.DialogueType.Room3, SoundPlayer.SoundClip.Room3, 2.5f);
+                    if (!showedDialogue[1])
+                    {
+                        UIController.Instance.ShowDialouge(UIController.DialogueType.Room3, SoundPlayer.SoundClip.Room3, 2.5f);
+                        showedDialogue[1] = true;
+                    }
                     break;
                 case "room5":
-                    UIController.Instance.ShowDialouge(UIController.DialogueType.Room5, SoundPlayer.SoundClip.Room5, 2.5f);
+                    if (!showedDialogue[2])
+                    {
+                        UIController.Instance.ShowDialouge(UIController.DialogueType.Room5, SoundPlayer.SoundClip.Room5, 2.5f);
+                        showedDialogue[2] = true;
+                    }
                     break;
             }
         }
@@ -143,7 +155,6 @@ namespace Supercyan.AnimalPeopleSample
             if (Input.GetKeyDown(KeyCode.F))
             {
                 m_animator.SetTrigger("Wave");
-                UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Greeting, SoundPlayer.SoundClip.Greeting, 2);
                 OnWavePressed?.Invoke(bubblePlaces[bubblePlaceIndex++].transform);
                 friendsCount = bubblePlaceIndex;
             }

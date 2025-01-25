@@ -22,6 +22,7 @@ public class Friend : MonoBehaviour
             return;
         if (Vector3.Distance(player.position, transform.position) <= 20)
         {
+            UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Greeting, SoundPlayer.SoundClip.Greeting, 2);
             StartCoroutine(GreetRoutine(parent));
         }
     }

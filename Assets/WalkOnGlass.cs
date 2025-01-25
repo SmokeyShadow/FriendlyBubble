@@ -17,7 +17,7 @@ public class WalkOnGlass : MonoBehaviour
     private Transform leftTransform;
     [SerializeField]
     public List<GameObject> rows;
-    public List<int> availGlasses = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+    public List<int> availGlasses = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
 
     public List<int> breakableGlasses = new List<int>();
     public List<int> allRows = new List<int>();
@@ -25,7 +25,7 @@ public class WalkOnGlass : MonoBehaviour
     float jumpTimer;
     int currentRow;
     int friendIndex;
-
+    Transform firstPosition;
     public static WalkOnGlass Instance
     {
         get
@@ -38,12 +38,13 @@ public class WalkOnGlass : MonoBehaviour
 
     void Start()
     {
+        firstPosition = player.gameObject.transform;
+        player.gameObject.GetComponent<Animator>().SetBool("Grounded", true);
         player.enabled = false;
+
         //assign breakble glasses (count = 5) between 8 rows
         GenerateGlassWay();
-        UIController.Instance.ShowDialouge(UIController.DialogueType.GlassLine, SoundPlayer.SoundClip.GlassLine, 3);
-        GenerateFriend();
-
+        UIController.Instance.ShowDialouge(UIController.DialogueType.GlassLine, SoundPlayer.SoundClip.GlassLine, 5);
         for (int i = 0; i < rows.Count; i++)
         {
             int random = Random.Range(0, 2);
@@ -51,8 +52,8 @@ public class WalkOnGlass : MonoBehaviour
             //it's not breakable, both will set breakables to false
             if (!breakableGlasses.Contains(i))
             {
-                rows[i].transform.GetChild(0).GetComponent<BreakableWindow>().enabled = false;
-                rows[i].transform.GetChild(1).GetComponent<BreakableWindow>().enabled = false;
+                rows[i].transform.GetChild(0).GetComponent<BreakableWindow>().Unbreakable();
+                rows[i].transform.GetChild(1).GetComponent<BreakableWindow>().Unbreakable();
             }
             else
             {
@@ -60,18 +61,23 @@ public class WalkOnGlass : MonoBehaviour
                 if (random == 0)
                 {
                     rows[i].transform.GetChild(0).GetComponent<BreakableWindow>().enabled = true;
-                    rows[i].transform.GetChild(1).GetComponent<BreakableWindow>().enabled = false;
+                    rows[i].transform.GetChild(1).GetComponent<BreakableWindow>().Unbreakable();
                 }
                 else
                 {
-                    rows[i].transform.GetChild(0).GetComponent<BreakableWindow>().enabled = false;
+                    rows[i].transform.GetChild(0).GetComponent<BreakableWindow>().Unbreakable();
                     rows[i].transform.GetChild(1).GetComponent<BreakableWindow>().enabled = true;
                 }
             }
             allRows.Add(random);
         }
+        StartCoroutine(GenerateFriend(8));
     }
-
+    private void Update()
+    {
+        if (player.gameObject.transform.position.y < -3.5f)
+            player.gameObject.transform.position = firstPosition.position;
+    }
     void GenerateGlassWay()
     {
         List<int> tempAvailGlass = new List<int>();
@@ -96,10 +102,12 @@ public class WalkOnGlass : MonoBehaviour
             allRows[row] = 1;
         else if (allRows[row] == 1)
             allRows[row] = 0;
+        breakableGlasses.Remove(row);
     }
 
-    void GenerateFriend()
+    IEnumerator GenerateFriend(float after)
     {
+        yield return new WaitForSeconds(after);
         if (allRows[0] == 0)
             friends[friendIndex].transform.position = leftTransform.position;
         else
@@ -115,18 +123,18 @@ public class WalkOnGlass : MonoBehaviour
         else
             friend.transform.LookAt(rows[currentRow].transform.GetChild(1).transform.GetChild(0).position);
         yield return new WaitForSeconds(2);
-        friend.GetComponent<Rigidbody>().AddForce(friend.transform.forward * 5f + Vector3.up * 10f, ForceMode.Impulse);
+        friend.GetComponent<Rigidbody>().AddForce(friend.transform.forward * 3.5f + Vector3.up * 10f, ForceMode.Impulse);
         yield return new WaitForSeconds(2);
-        if(breakableGlasses.Contains(currentRow))
+        if (breakableGlasses.Contains(currentRow))
         {
             currentRow = 0;
             friendIndex++;
-            if(friendIndex == friends.Count)
+            if (friendIndex == friends.Count)
             {
                 player.enabled = true;
                 yield break;
             }
-            GenerateFriend();
+            StartCoroutine(GenerateFriend(2));
         }
         else
         {

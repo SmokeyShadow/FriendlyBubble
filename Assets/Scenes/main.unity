@@ -2850,12 +2850,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'ForeArm.R'\n\tTransform 'Thigh.R'\n\tTransform
-    'Foot.R'\n\tTransform 'Foot.L'\n\tTransform 'UpperArm.R'\n\tTransform 'Shin.R'\n\tTransform
-    'Shoulder.R'\n\tTransform 'UpperArm.L'\n\tTransform 'ForeArm.L'\n\tTransform
-    'Spine2'\n\tand more ...\n\tFrom animation clip 'mixamo.com'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -4361,7 +4356,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 91434de8ab233ea44abc6a81a0f2d1a8, type: 3}
   - {fileID: 8300000, guid: 8d0c022c2ba24a545b3b6179242e7411, type: 3}
   - {fileID: 8300000, guid: a2aa0566116b60543ade7f58a7318039, type: 3}
-  backAudioClips: []
+  backAudioClips:
+  - {fileID: 8300000, guid: 08ea136cef6ccfd4fae35cdd15921872, type: 3}
 --- !u!4 &1008196291
 Transform:
   m_ObjectHideFlags: 0
@@ -4540,12 +4536,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'ForeArm.R'\n\tTransform 'Thigh.R'\n\tTransform
-    'Foot.R'\n\tTransform 'Foot.L'\n\tTransform 'UpperArm.R'\n\tTransform 'Shin.R'\n\tTransform
-    'Shoulder.R'\n\tTransform 'UpperArm.L'\n\tTransform 'ForeArm.L'\n\tTransform
-    'Spine2'\n\tand more ...\n\tFrom animation clip 'mixamo.com'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -8718,12 +8709,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'ForeArm.R'\n\tTransform 'Thigh.R'\n\tTransform
-    'Foot.R'\n\tTransform 'Foot.L'\n\tTransform 'UpperArm.R'\n\tTransform 'Shin.R'\n\tTransform
-    'Shoulder.R'\n\tTransform 'UpperArm.L'\n\tTransform 'ForeArm.L'\n\tTransform
-    'Spine2'\n\tand more ...\n\tFrom animation clip 'mixamo.com'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -14227,12 +14213,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'ForeArm.R'\n\tTransform 'Thigh.R'\n\tTransform
-    'Foot.R'\n\tTransform 'Foot.L'\n\tTransform 'UpperArm.R'\n\tTransform 'Shin.R'\n\tTransform
-    'Shoulder.R'\n\tTransform 'UpperArm.L'\n\tTransform 'ForeArm.L'\n\tTransform
-    'Spine2'\n\tand more ...\n\tFrom animation clip 'mixamo.com'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0

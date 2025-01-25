@@ -11,7 +11,7 @@ public class BreakableWindow : MonoBehaviour {
     public RowType rowType;
     [Tooltip("Layer should be TransparentFX or your own layer for breakable windows.")]
     public LayerMask layer;
-    [Range(2,25)]
+    [Range(2, 25)]
     public int partsX = 5;
     [Range(2, 25)]
     public int partsY = 5;
@@ -44,11 +44,11 @@ public class BreakableWindow : MonoBehaviour {
     public List<GameObject> splinters;
     private Vector3[] vertices;
     private Vector3[] normals;
-    
+
     private bool allreadyCalculated = false;
     private GameObject splinterParent;
     int[] tris;
-
+    bool unBreakable;
     void Start()
     {
         if (preCalculate == true && allreadyCalculated == false)
@@ -66,7 +66,7 @@ public class BreakableWindow : MonoBehaviour {
     {
         vertices = new Vector3[(partsX + 1) * (partsY + 1)];
         normals = new Vector3[(partsX + 1) * (partsY + 1)];
-        
+
 
         for (int y = 0; y < partsY + 1; y++)
         {
@@ -150,12 +150,12 @@ public class BreakableWindow : MonoBehaviour {
 
         MeshFilter mf = obj.AddComponent<MeshFilter>();
         mf.mesh = m;
-        
+
         MeshCollider col = obj.AddComponent<MeshCollider>();
         col.inflateMesh = true;
         col.convex = true;
         if (destroyPhysicsTime > 0 && destroyColliderWithPhysics) Destroy(col, destroyPhysicsTime);
-        
+
         Rigidbody rigid = obj.AddComponent<Rigidbody>();
         rigid.centerOfMass = (v[0] + v[1] + v[2]) / 3f;
         if (addTorques && preCalculate == false) rigid.AddTorque(new Vector3(Random.value > 0.5f ? Random.value * 50 : -Random.value * 50, Random.value > 0.5f ? Random.value * 50 : -Random.value * 50, Random.value > 0.5f ? Random.value * 50 : -Random.value * 50));
@@ -208,6 +208,8 @@ public class BreakableWindow : MonoBehaviour {
                 {
                     for (int i = 0; i < splinters.Count; i++)
                     {
+                        if (splinters[i].GetComponent<Rigidbody>() == null)
+                            splinters[i].AddComponent<Rigidbody>();
                         splinters[i].GetComponent<Rigidbody>().AddTorque(new Vector3(Random.value > 0.5f ? Random.value * 50 : -Random.value * 50, Random.value > 0.5f ? Random.value * 50 : -Random.value * 50, Random.value > 0.5f ? Random.value * 50 : -Random.value * 50));
                     }
                 }
@@ -223,7 +225,7 @@ public class BreakableWindow : MonoBehaviour {
             Destroy(GetComponent<MeshRenderer>());
             Destroy(GetComponent<MeshFilter>());
 
-            isBroken = true;            
+            isBroken = true;
         }
 
         if (breakingSound != null)
@@ -235,10 +237,15 @@ public class BreakableWindow : MonoBehaviour {
         return splinters.ToArray();
     }
 
+    public void Unbreakable()
+    {
+        unBreakable = true;
+    }
 
     void OnCollisionEnter(Collision col)
     {
-        WalkOnGlass.Instance.ChangeRows((int)rowType);
+        if (unBreakable)
+            return;
         if (useCollision == true)
         {
             if (health > 0)
@@ -251,6 +258,7 @@ public class BreakableWindow : MonoBehaviour {
                 }
             }
             else breakWindow();
-        }        
+        }
+        WalkOnGlass.Instance.ChangeRows((int)rowType);
     }
 }
