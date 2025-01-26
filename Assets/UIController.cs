@@ -21,6 +21,10 @@ public class UIController : MonoBehaviour
     private List<string> Dialouges;
     [SerializeField]
     private TextMeshProUGUI dialougeText;
+    public void ClearDialogue()
+    {
+        dialougeText.text = "";
+    }
 
     public void ShowDialouge(DialogueType type, SoundPlayer.SoundClip dialogueAudio, float afterTime)
     {

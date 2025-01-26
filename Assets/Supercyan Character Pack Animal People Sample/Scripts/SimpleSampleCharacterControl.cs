@@ -18,6 +18,7 @@ namespace Supercyan.AnimalPeopleSample
         }
 
         [SerializeField] private float m_moveSpeed = 2;
+        [SerializeField] private float m_shiftSpeed = 5;
         [SerializeField] private float m_turnSpeed = 200;
         [SerializeField] private float m_jumpForce = 4;
 
@@ -46,11 +47,11 @@ namespace Supercyan.AnimalPeopleSample
         private bool m_jumpInput = false;
 
         private bool m_isGrounded;
-
+        private bool shiftPressed; 
         private List<Collider2D> m_collisions = new List<Collider2D>();
 
         private int friendsCount;
-        private List<bool> showedDialogue = new List<bool>();
+        private List<bool> showedDialogue = new List<bool> { false, false, false};
         public int FriendsCount { get => friendsCount; set => friendsCount = value; }
 
         public delegate void WavePressed(Transform parent);
@@ -154,9 +155,11 @@ namespace Supercyan.AnimalPeopleSample
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
+                if (SoundPlayer.Instance.IsPlaying())
+                    return;
                 m_animator.SetTrigger("Wave");
-                OnWavePressed?.Invoke(bubblePlaces[bubblePlaceIndex++].transform);
-                friendsCount = bubblePlaceIndex;
+                OnWavePressed?.Invoke(bubblePlaces[bubblePlaceIndex].transform);
+  
             }
 
             if (Input.GetKey(KeyCode.F))
@@ -234,18 +237,19 @@ namespace Supercyan.AnimalPeopleSample
             float v = Input.GetAxis("Vertical");
             float h = Input.GetAxis("Horizontal");
 
-            //Transform camera = Camera.main.transform;
 
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 v *= m_walkScale;
                 h *= m_walkScale;
+                shiftPressed = true;
             }
-
+            else
+                shiftPressed = false;
+   
             m_currentV = Mathf.Lerp(m_currentV, v, Time.deltaTime * m_interpolation);
             m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);
 
-            //Vector3 direction = camera.forward * m_currentV + camera.right * m_currentH;
             Vector3 direction = Vector3.right * m_currentH;
             float directionLength = direction.magnitude;
             direction.y = 0;
@@ -256,7 +260,7 @@ namespace Supercyan.AnimalPeopleSample
                 m_currentDirection = Vector3.Slerp(m_currentDirection, direction, Time.deltaTime * m_interpolation);
 
                 transform.rotation = Quaternion.LookRotation(m_currentDirection);
-                transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime;
+                transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime * (shiftPressed ? m_shiftSpeed:1);
 
                 m_animator.SetFloat("MoveSpeed", direction.magnitude);
             }
@@ -273,6 +277,12 @@ namespace Supercyan.AnimalPeopleSample
                 m_jumpTimeStamp = Time.time;
                 m_rigidBody.AddForce(Vector3.up * m_jumpForce, ForceMode2D.Impulse);
             }
+        }
+
+        public void AddFriend()
+        {
+            bubblePlaceIndex++;
+            friendsCount = bubblePlaceIndex;
         }
     }
 }

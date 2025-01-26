@@ -12,9 +12,7 @@ public class WalkOnGlass : MonoBehaviour
     [SerializeField]
     private List<GameObject> friends;
     [SerializeField]
-    private Transform rightTransform;
-    [SerializeField]
-    private Transform leftTransform;
+    private Transform friendTransform;
     [SerializeField]
     public List<GameObject> rows;
     public List<int> availGlasses = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -25,7 +23,7 @@ public class WalkOnGlass : MonoBehaviour
     float jumpTimer;
     int currentRow;
     int friendIndex;
-    Transform firstPosition;
+    Vector3 firstPosition;
     public static WalkOnGlass Instance
     {
         get
@@ -38,13 +36,13 @@ public class WalkOnGlass : MonoBehaviour
 
     void Start()
     {
-        firstPosition = player.gameObject.transform;
+        firstPosition = player.gameObject.transform.position;
         player.gameObject.GetComponent<Animator>().SetBool("Grounded", true);
         player.enabled = false;
 
         //assign breakble glasses (count = 5) between 8 rows
         GenerateGlassWay();
-        UIController.Instance.ShowDialouge(UIController.DialogueType.GlassLine, SoundPlayer.SoundClip.GlassLine, 5);
+        UIController.Instance.ShowDialouge(UIController.DialogueType.GlassLine, SoundPlayer.SoundClip.GlassLine, 8);
         for (int i = 0; i < rows.Count; i++)
         {
             int random = Random.Range(0, 2);
@@ -73,11 +71,13 @@ public class WalkOnGlass : MonoBehaviour
         }
         StartCoroutine(GenerateFriend(8));
     }
+
     private void Update()
     {
-        if (player.gameObject.transform.position.y < -3.5f)
-            player.gameObject.transform.position = firstPosition.position;
+        if (player.gameObject.transform.position.y <= -3.5f)
+            player.gameObject.transform.position = firstPosition;
     }
+
     void GenerateGlassWay()
     {
         List<int> tempAvailGlass = new List<int>();
@@ -108,10 +108,7 @@ public class WalkOnGlass : MonoBehaviour
     IEnumerator GenerateFriend(float after)
     {
         yield return new WaitForSeconds(after);
-        if (allRows[0] == 0)
-            friends[friendIndex].transform.position = leftTransform.position;
-        else
-            friends[friendIndex].transform.position = rightTransform.position;
+        friends[friendIndex].transform.position = friendTransform.position;
         friends[friendIndex].SetActive(true);
         StartCoroutine(JumpRoutine(friends[friendIndex]));
     }
@@ -123,7 +120,7 @@ public class WalkOnGlass : MonoBehaviour
         else
             friend.transform.LookAt(rows[currentRow].transform.GetChild(1).transform.GetChild(0).position);
         yield return new WaitForSeconds(2);
-        friend.GetComponent<Rigidbody>().AddForce(friend.transform.forward * 3.5f + Vector3.up * 10f, ForceMode.Impulse);
+        friend.GetComponent<Rigidbody>().AddForce(friend.transform.forward * 3.15f + Vector3.up * 10f, ForceMode.Impulse);
         yield return new WaitForSeconds(2);
         if (breakableGlasses.Contains(currentRow))
         {

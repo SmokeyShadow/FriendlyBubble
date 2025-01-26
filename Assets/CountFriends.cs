@@ -11,7 +11,7 @@ public class CountFriends : MonoBehaviour
     private SimpleSampleCharacterControl player;
     [SerializeField]
     private TextMeshProUGUI numberCounter;
-
+    Coroutine countNumbersRoutine = null;
     private List<string> numbersStrList = new List<string> { "q", "w", "e", "r", "t" };
     private float initialCameraSize = 11.38807f;
     private float cameraElevatorSize = 25f;
@@ -20,7 +20,7 @@ public class CountFriends : MonoBehaviour
     {
         if (collision.gameObject.tag == "player")
         {
-            StartCoroutine(CountNumbersRoutine(player.FriendsCount));
+            countNumbersRoutine = StartCoroutine(CountNumbersRoutine(player.FriendsCount));
             Camera.main.orthographicSize = cameraElevatorSize;
         }
     }
@@ -29,7 +29,10 @@ public class CountFriends : MonoBehaviour
         if (collision.gameObject.tag == "player")
         {
             Camera.main.orthographicSize = initialCameraSize;
+            UIController.Instance.ClearDialogue();
             numberCounter.text = "";
+            StopCoroutine(countNumbersRoutine);
+            
         }
     }
 

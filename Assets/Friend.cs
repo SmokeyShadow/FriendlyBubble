@@ -22,7 +22,7 @@ public class Friend : MonoBehaviour
             return;
         if (Vector3.Distance(player.position, transform.position) <= 20)
         {
-            UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Greeting, SoundPlayer.SoundClip.Greeting, 2);
+            UIController.Instance.ShowDialougeWithOutFreeze(UIController.DialogueType.Greeting, SoundPlayer.SoundClip.Greeting, 0);
             StartCoroutine(GreetRoutine(parent));
         }
     }
@@ -42,5 +42,6 @@ public class Friend : MonoBehaviour
         yield return new WaitForSecondsRealtime(2f);
         parent.parent.gameObject.SetActive(false);
         Time.timeScale = 1;
+        player.gameObject.GetComponent<SimpleSampleCharacterControl>().AddFriend();
     }
 }

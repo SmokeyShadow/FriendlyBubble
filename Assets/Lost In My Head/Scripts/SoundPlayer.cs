@@ -91,6 +91,11 @@ public class SoundPlayer : MonoBehaviour
         audioSource.enabled = !enable;
     }
 
+    public bool IsPlaying()
+    {
+        return audioSource.isPlaying;
+    }
+
     public void VolumeDown()
     {
         loopaudioSource.volume = 0.2f;
